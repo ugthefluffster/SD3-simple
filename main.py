@@ -16,7 +16,6 @@ def generate_image(prompt, mode, uploaded_image, strength, aspect_ratio, seed, o
     data = {
         "prompt": prompt,
         "mode": mode,
-        "aspect_ratio": aspect_ratio,
         "seed": seed,
         "output_format": output_format,
         "model": model,
@@ -25,11 +24,12 @@ def generate_image(prompt, mode, uploaded_image, strength, aspect_ratio, seed, o
     files = {
     "data": ('', json.dumps(data), 'application/json'),  # Add this line
     }   
-    if mode == "image-to-image":
-        if uploaded_image is not None:
-            files["image"] = uploaded_image
-            data["strength"] = strength
-            data.pop["aspect_ratio"]
+    if mode == "image-to-image" and uploaded_image is not None:
+        files["image"] = ('image', uploaded_image, 'application/octet-stream')
+        data["strength"] = strength
+
+    else:
+        data["aspect_ratio"] = aspect_ratio,
 
     response = requests.post(api_url, headers=headers, data=data, files=files)
 
