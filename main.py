@@ -29,6 +29,7 @@ def generate_image(prompt, mode, uploaded_image, strength, aspect_ratio, seed, o
         if uploaded_image is not None:
             files["image"] = uploaded_image
             data["strength"] = strength
+            data.pop["aspect_ratio"]
 
     response = requests.post(api_url, headers=headers, data=data, files=files)
 
