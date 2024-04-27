@@ -48,7 +48,8 @@ def main():
     if not os.path.exists('generated_images'):
         os.makedirs('generated_images')
 
-    with gr.Blocks() as interface:
+    with gr.Blocks(title="Stable Diffusion 3") as interface:
+        gr.Markdown('# Stable Diffusion 3')
         with gr.Row():
             with gr.Column():
                 with gr.Row():
