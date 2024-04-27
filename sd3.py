@@ -75,7 +75,7 @@ def main():
             outputs=image_display
         )
 
-    interface.launch()
+    interface.launch(server_port=7870)
 
 if __name__ == "__main__":
     main()
