@@ -9,11 +9,12 @@ import webbrowser
 api_key = dotenv.get_key('.env', 'STABILITY_API_KEY')
 
 def generate_image(prompt, mode, uploaded_image, strength, aspect_ratio, seed, output_format, model, negative_prompt):
-    api_url = "https://api.stability.ai/v2beta/stable-image/generate/sd3"
+    api_url = "https://api.stability.ai/v2beta/stable-image/generate/"
     headers = {
         "authorization": "Bearer " + api_key,  # Replace with your actual API key
         "accept": "image/*" if output_format == 'png' or output_format == 'jpeg' else "application/json"
     }
+    
     data = {
         "prompt": prompt,
         "mode": mode,
@@ -30,8 +31,8 @@ def generate_image(prompt, mode, uploaded_image, strength, aspect_ratio, seed, o
         data["strength"] = strength
     else:
         data["aspect_ratio"] = aspect_ratio,
-
-    response = requests.post(api_url, headers=headers, data=data, files=files)
+    endpoint = "sd3" if model != "core" else "core"
+    response = requests.post(api_url+endpoint, headers=headers, data=data, files=files)
 
     if response.status_code == 200:
         # Save the file with a unique timestamp-based name
@@ -62,7 +63,7 @@ def main():
                     seed = gr.Number(label="Seed", value=0)
                 with gr.Row():
                     output_format = gr.Dropdown(choices=["jpeg", "png", "application/json"], label="Output Format", value="jpeg")
-                    model = gr.Dropdown(choices=["sd3", "sd3-turbo"], label="Model", value="sd3")
+                    model = gr.Dropdown(choices=["sd3", "sd3-turbo", "core"], label="Model", value="sd3")
                 with gr.Row(visible=False):
                     uploaded_image = gr.File(label="Upload Image")
                     strength = gr.Slider(minimum=0, maximum=1, step=0.01, value=0.5, label="Strength")
