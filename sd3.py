@@ -4,6 +4,7 @@ import datetime
 import os
 import json
 import dotenv
+import webbrowser
 
 api_key = dotenv.get_key('.env', 'STABILITY_API_KEY')
 
@@ -75,8 +76,9 @@ def main():
             inputs=[prompt, mode, uploaded_image, strength, aspect_ratio, seed, output_format, model, negative_prompt],
             outputs=image_display
         )
-
-    interface.launch(server_port=7870)
+    port = 7870
+    webbrowser.open('http://127.0.0.1:' + str(port), new=2)
+    interface.launch(server_port=port)
 
 if __name__ == "__main__":
     main()
